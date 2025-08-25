@@ -291,6 +291,7 @@ $list_view=<<<EOT
 				<th class="text-center text-nowrap vmiddle" style="width:5%;padding: 10px;background-color: #CBF3FC;">報價金額<br>(未稅)</th>
 				<th class="text-center text-nowrap vmiddle" style="width:5%;padding: 10px;background-color: #CBF3FC;">報價單<br>是否送出</th>
 				<th class="text-center text-nowrap vmiddle" style="width:5%;padding: 10px;background-color: #CBF3FC;">報價日期</th>
+				<th class="text-center text-nowrap vmiddle" style="width:5%;padding: 10px;background-color: #CBF3FC;">報價回簽日期</th>
 				<th class="text-center text-nowrap vmiddle" style="width:5%;padding: 10px;background-color: #CBF3FC;">預計<br>進場日期</th>
 				<th class="text-center text-nowrap vmiddle" style="width:5%;padding: 10px;background-color: #CBF3FC;">處理</th>
 				<th class="text-center text-nowrap vmiddle" style="width:5%;padding: 10px;background-color: #CBF3FC;">最後修改</th>
@@ -467,12 +468,19 @@ $list_view
 
 				$('td:eq(14)', nRow).html( '<div class="d-flex justify-content-center align-items-center text-center size12 text-nowrap" style="height:auto;min-height:32px;">'+quotation_date+'</div>' );
 
+				//報價回簽日期
+				var quotation_return_date = "";
+				if (aData[26] != null && aData[26] != "" && aData[26] != "0000-00-00")
+					quotation_return_date = aData[26];
+
+				$('td:eq(15)', nRow).html( '<div class="d-flex justify-content-center align-items-center text-center size12 text-nowrap" style="height:auto;min-height:32px;">'+quotation_return_date+'</div>' );
+
 				//預計進場日期
 				var estimated_arrival_date = "";
 				if (aData[14] != null && aData[14] != "" && aData[14] != "0000-00-00")
 					estimated_arrival_date = aData[14];
 
-				$('td:eq(15)', nRow).html( '<div class="d-flex justify-content-center align-items-center text-center size12 text-nowrap" style="height:auto;min-height:32px;">'+estimated_arrival_date+'</div>' );
+				$('td:eq(16)', nRow).html( '<div class="d-flex justify-content-center align-items-center text-center size12 text-nowrap" style="height:auto;min-height:32px;">'+estimated_arrival_date+'</div>' );
 
 				var url1 = "openfancybox_edit('/index.php?ch=edit&auto_seq="+aData[19]+"&fm=$fm',800,'96%','');";
 				var mdel = "myDel("+aData[19]+");";
@@ -489,7 +497,7 @@ $list_view
 						+'</div>';
 				}
 
-				$('td:eq(16)', nRow).html( '<div class="d-flex justify-content-center align-items-center text-center" style="height:auto;min-height:32px;">'+show_btn+'</div>' );
+				$('td:eq(17)', nRow).html( '<div class="d-flex justify-content-center align-items-center text-center" style="height:auto;min-height:32px;">'+show_btn+'</div>' );
 
 				//最後修改
 				var last_modify3 = "";
@@ -501,7 +509,7 @@ $list_view
 				if (aData[20] != null && aData[20] != "")
 					member_name = '<div class="text-nowrap">'+aData[20]+'</div>';
 
-				$('td:eq(17)', nRow).html( '<div class="text-center" style="height:auto;min-height:32px;">'+last_modify3+member_name+'</div>' );
+				$('td:eq(18)', nRow).html( '<div class="text-center" style="height:auto;min-height:32px;">'+last_modify3+member_name+'</div>' );
 
 
 				return nRow;

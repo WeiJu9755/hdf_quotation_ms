@@ -70,6 +70,7 @@ function SaveValue($aFormValues){
 		$quotation_amt			= trim($aFormValues['quotation_amt']);
 		$quotation_sended		= trim($aFormValues['quotation_sended']);
 		$quotation_date			= trim($aFormValues['quotation_date']);
+		$quotation_return_date	= trim($aFormValues['quotation_return_date']);
 		$estimated_arrival_date	= trim($aFormValues['estimated_arrival_date']);
 		$ContractingModel		= trim($aFormValues['ContractingModel']);
 		$company_id				= trim($aFormValues['company_id']);
@@ -89,23 +90,31 @@ function SaveValue($aFormValues){
 		$mDB = "";
 		$mDB = new MywebDB();
 
-		$Qry="UPDATE CaseManagement set
-				 status1			= '$status1'
-				,status2			= '$status2'
-				,engineering_qty	= '$engineering_qty'
-				,std_layer_template_qty = '$std_layer_template_qty'
-				,roof_protrusion_template_qty = '$roof_protrusion_template_qty'
-				,material_amt		= '$material_amt'
-				,OEM_cost			= '$OEM_cost'
-				,quotation_amt		= '$quotation_amt'
-				,quotation_sended	= '$quotation_sended'
-				,quotation_date		= '$quotation_date'
-				,estimated_arrival_date = '$estimated_arrival_date'
-				,ContractingModel	= '$ContractingModel'
-				,company_id			= '$company_id'
-				,makeby3			= '$memberID'
-				,last_modify3		= now()
-				where auto_seq = '$auto_seq'";
+		$Qry="UPDATE CaseManagement 
+				SET
+					status1                 = '$status1',
+					status2                 = '$status2',
+					engineering_qty         = '$engineering_qty',
+					std_layer_template_qty  = '$std_layer_template_qty',
+					roof_protrusion_template_qty = '$roof_protrusion_template_qty',
+					material_amt            = '$material_amt',
+					OEM_cost                = '$OEM_cost',
+					quotation_amt           = '$quotation_amt',
+					quotation_sended        = '$quotation_sended',
+					quotation_date          = '$quotation_date',
+					quotation_return_date   = CASE 
+												WHEN '$status2' = '已回簽' 
+													AND ('$quotation_return_date' = '' 
+														OR '$quotation_return_date' = '0000-00-00') 
+												THEN NOW() 
+												ELSE '$quotation_return_date' 
+											END,
+					estimated_arrival_date  = '$estimated_arrival_date',
+					ContractingModel        = '$ContractingModel',
+					company_id              = '$company_id',
+					makeby3                 = '$memberID',
+					last_modify3            = NOW()
+				WHERE auto_seq = '$auto_seq';";
 		$mDB->query($Qry);
 
 		$Qry="UPDATE CaseManagement set
@@ -187,6 +196,7 @@ if ($total > 0) {
 	$quotation_amt = $row['quotation_amt'];
 	$quotation_sended = $row['quotation_sended'];
 	$quotation_date = $row['quotation_date'];
+	$quotation_return_date = $row['quotation_return_date'];
 	$estimated_arrival_date = $row['estimated_arrival_date'];
 	//$completion_date = $row['completion_date'];
 
@@ -538,6 +548,24 @@ $style_css
 							<script type="text/javascript">
 								$(function () {
 									$('#quotation_date').datetimepicker({
+										locale: 'zh-tw'
+										,format:"YYYY-MM-DD"
+										,allowInputToggle: true
+									});
+								});
+							</script>
+						</div> 
+					</div>
+					<div>
+						<div class="field_div1">報價回簽日期:</div> 
+						<div class="field_div2">
+							<div class="input-group" id="quotation_return_date" style="width:100%;max-width:250px;">
+								<input type="text" class="form-control" name="quotation_return_date" placeholder="請輸入報價回簽日期" aria-describedby="quotation_return_date" value="$quotation_return_date">
+								<button class="btn btn-outline-secondary input-group-append input-group-addon" type="button" data-target="#quotation_return_date" data-toggle="datetimepicker"><i class="bi bi-calendar"></i></button>
+							</div>
+							<script type="text/javascript">
+								$(function () {
+									$('#quotation_return_date').datetimepicker({
 										locale: 'zh-tw'
 										,format:"YYYY-MM-DD"
 										,allowInputToggle: true
