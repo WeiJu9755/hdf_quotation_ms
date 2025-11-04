@@ -453,7 +453,7 @@ $style_css
 										</div>
 									</div>
 									<div class="myrow">
-										<div class="mycell code_class">建物棟數:</div>
+										<div class="mycell code_class">評估建物棟數:</div>
 										<div class="mycell blue weight">$buildings</div>
 									</div>
 									<!--
